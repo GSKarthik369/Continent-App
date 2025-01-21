@@ -72,7 +72,7 @@ const Login = () => {
       </div>
       <div className="login-image">
         <img
-          src="https://via.placeholder.com/300x400?text=Illustration"
+          src="/assets/img/Login_Illustration.svg"
           alt="Login Illustration"
         />
       </div>

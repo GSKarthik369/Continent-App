@@ -100,7 +100,7 @@ const Register = () => {
       </div>
       <div className="register-image">
         <img
-          src="https://via.placeholder.com/300x400?text=Illustration"
+          src="/assets/img/Login_Illustration.svg"
           alt="Register Illustration"
         />
       </div>
