@@ -1,4 +1,4 @@
-/* Register Page Styling */
+/* Register page styling */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -79,4 +79,26 @@ body {
   max-width: 300px;
   object-fit: cover;
   border-radius: 8px;
+}
+
+.register-image {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .register-image {
+    display: block;
+  }
+}
+
+.toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1050;
+}
+
+.toast {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
 }

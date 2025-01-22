@@ -1,21 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
+import { LuFacebook } from "react-icons/lu";
+import { CiTwitter } from "react-icons/ci";
+import { SlSocialLinkedin } from "react-icons/sl";
+import { AiOutlineYoutube } from "react-icons/ai";
+import Toast from "react-bootstrap/Toast";
 import "./Login.css";
 
 const Login = ({ onLogin }) => {
+  const LOG_ENABLED = false;
   /**
    * State maintained for username and email
    */
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [keepSignedIn, setKeepSignedIn] = useState(false);
+  const [show, setShow] = useState(false);
+  const [toastType, setToastType] = useState("");
+  const [showMsg, setShowMsg] = useState(false);
   /**
    * For navigating to dashboard
    */
   const navigate = useNavigate();
 
+  const toPascalCase = (str) => {
+    return str
+      .toLowerCase()
+      .replace(/(?:^|\s|-)\S/g, (match) => match.toUpperCase());
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    /**
+     * Check if the user is there in the stored data
+     */
     const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
     const user = storedUsers.find(
       (user) =>
@@ -23,19 +41,42 @@ const Login = ({ onLogin }) => {
         user?.password === password
     );
 
-    console.log(storedUsers);
+    LOG_ENABLED && console.log(storedUsers);
 
     if (user) {
       localStorage.setItem("currentUser", JSON.stringify(user));
-      alert("Login successful!");
-      onLogin(user.email, keepSignedIn); // Pass keepSignedIn state
+      setShow(true);
+      setShowMsg("Login successful!");
+      setToastType("success");
+      /**
+       * Login details
+       */
+      onLogin(user.email, keepSignedIn);
       navigate("/dashboard");
     } else {
-      alert("Invalid username/email or password!");
+      setShow(true);
+      setShowMsg("Invalid username/email or password! Please Sign up");
+      setToastType("warning");
     }
   };
 
   return (
+    <Fragment>
+      {/* Toast container */}
+      <div className="toast-container">
+        <Toast
+          onClose={() => setShow(false)}
+          show={show}
+          delay={3000}
+          autohide
+          bg={toastType}
+        >
+          <Toast.Header>
+            <strong className="me-auto">{toPascalCase(toastType)}</strong>
+          </Toast.Header>
+          <Toast.Body>{showMsg}</Toast.Body>
+        </Toast>
+      </div>
     <div className="login-container">
       <div className="login-form">
         <h2>Sign In</h2>
@@ -79,10 +120,18 @@ const Login = ({ onLogin }) => {
           <span>Or Sign In With</span>
         </div>
         <div className="social-login">
-          <button className="social-btn">🔵</button>
-          <button className="social-btn">f</button>
-          <button className="social-btn">in</button>
-          <button className="social-btn">🐦</button>
+            <button className="social-btn">
+              <LuFacebook />
+            </button>
+            <button className="social-btn">
+              <CiTwitter />
+            </button>
+            <button className="social-btn">
+              <SlSocialLinkedin />
+            </button>
+            <button className="social-btn">
+              <AiOutlineYoutube />
+            </button>
         </div>
       </div>
       <div className="login-image">
@@ -92,6 +141,7 @@ const Login = ({ onLogin }) => {
         />
       </div>
     </div>
+    </Fragment>
   );
 };
 
