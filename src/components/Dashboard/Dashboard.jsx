@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCountries, setRegion } from "../../redux/countriesSlice";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Button, Navbar, Nav } from "react-bootstrap";
 import "./Dashboard.css";
 
 const Dashboard = () => {
@@ -31,36 +31,41 @@ const Dashboard = () => {
 
   return (
     <Container className="dashboard">
-      <header className="dashboard-header">
-        <h1>WELCOME</h1>
-        <div className="filter">
-          <Button
-            variant={region === "All" ? "primary" : "outline-primary"}
-            onClick={() => handleRegionChange("All")}
-          >
-            All
-          </Button>
-          <Button
-            variant={region === "Asia" ? "primary" : "outline-primary"}
-            onClick={() => handleRegionChange("Asia")}
-          >
-            Asia
-          </Button>
-          <Button
-            variant={region === "Europe" ? "primary" : "outline-primary"}
-            onClick={() => handleRegionChange("Europe")}
-          >
-            Europe
-          </Button>
-        </div>
-      </header>
+      <Navbar expand="lg" className="bg-body-tertiary mb-4">
+        <Container>
+          <Navbar.Brand href="#">Country</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link
+                className={region === "All" ? "text-primary" : ""}
+                onClick={() => handleRegionChange("All")}
+              >
+                All
+              </Nav.Link>
+              <Nav.Link
+                className={region === "Asia" ? "text-primary" : ""}
+                onClick={() => handleRegionChange("Asia")}
+              >
+                Asia
+              </Nav.Link>
+              <Nav.Link
+                className={region === "Europe" ? "text-primary" : ""}
+                onClick={() => handleRegionChange("Europe")}
+              >
+                Europe
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
 
       {/* Slider */}
       <Carousel showThumbs={false} showStatus={false} infiniteLoop>
         {filteredCountries.slice(0, 5).map((country, index) => (
           <div key={index}>
             <img src={country.flag} alt={country.name} />
-            <p className="legend">{country.name}</p>
+            {/* <p className="legend">{country.name}</p> */}
           </div>
         ))}
       </Carousel>

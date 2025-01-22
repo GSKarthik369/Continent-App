@@ -2,16 +2,25 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
-const Login = () => {
-  const [identifier, setIdentifier] = useState(""); // Can be username or email
+const Login = ({ onLogin }) => {
+  /**
+   * State maintained for username and email
+   */
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
+  const [keepSignedIn, setKeepSignedIn] = useState(false);
+  /**
+   * For navigating to dashboard
+   */
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
     const user = storedUsers.find(
-      (user) => (user?.username === identifier || user?.email === identifier) && user?.password === password
+      (user) =>
+        (user?.username === identifier || user?.email === identifier) &&
+        user?.password === password
     );
 
     console.log(storedUsers);
@@ -19,9 +28,10 @@ const Login = () => {
     if (user) {
       localStorage.setItem("currentUser", JSON.stringify(user));
       alert("Login successful!");
+      onLogin(user.email, keepSignedIn); // Pass keepSignedIn state
       navigate("/dashboard");
     } else {
-      alert("Invalid username/email or password.");
+      alert("Invalid username/email or password!");
     }
   };
 
@@ -53,7 +63,12 @@ const Login = () => {
           </div>
           <div className="options">
             <label>
-              <input type="checkbox" /> Keep me signed in
+              <input
+                type="checkbox"
+                checked={keepSignedIn}
+                onChange={(e) => setKeepSignedIn(e.target.checked)}
+              />{" "}
+              Keep me signed in
             </label>
           </div>
           <button type="submit" className="btn-primary">

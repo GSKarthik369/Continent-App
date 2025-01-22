@@ -11,18 +11,31 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Check for session in localStorage
+    /**
+     * Check for session in localStorage
+     */
     const session = localStorage.getItem("userSession");
-    if (session) setIsAuthenticated(true);
+    const keepSignedIn = localStorage.getItem("keepSignedIn") === "true";
+
+    if (session && (keepSignedIn || sessionStorage.getItem("userSession"))) {
+      setIsAuthenticated(true);
+    }
   }, []);
 
-  const handleLogin = (email) => {
+  const handleLogin = (email, keepSignedIn) => {
     localStorage.setItem("userSession", email);
+    if (keepSignedIn) {
+      localStorage.setItem("keepSignedIn", true);
+    } else {
+      sessionStorage.setItem("userSession", email);
+    }
     setIsAuthenticated(true);
   };
 
   const handleLogout = () => {
     localStorage.removeItem("userSession");
+    localStorage.removeItem("keepSignedIn");
+    sessionStorage.removeItem("userSession");
     setIsAuthenticated(false);
   };
 
