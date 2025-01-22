@@ -171,13 +171,13 @@ const Dashboard = () => {
 
       {visible < filteredCountries.length && (
         <div className="text-center filter-btn">
-          <Button onClick={handleLoadMore}>Load More</Button>
+          <Button className="custom-button" variant="dark" onClick={handleLoadMore}>Load More</Button>
         </div>
       )}
 
       {/* Footer */}
       <footer className="dashboard-footer">
-        <div className="social-signup">
+        <div className="social-media-icons">
           <button className="social-btn">
             <LuFacebook />
           </button>
@@ -190,6 +190,12 @@ const Dashboard = () => {
           <button className="social-btn">
             <AiOutlineYoutube />
           </button>
+        </div>
+        <div className="footer-gmail">
+          g.s.karthik369@gmail.com
+        </div>
+        <div className="footer-copyright">
+          Copyright &copy; 2025 Karthik. All rights reserved.
         </div>
       </footer>
     </Container>
